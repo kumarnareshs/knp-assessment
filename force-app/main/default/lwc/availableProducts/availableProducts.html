@@ -1,11 +1,12 @@
 <template>
-    <lightning-card title={labels.Available_Product_Label} class={flexipageRegionWidth}>
-        <div class="slds-grid slds-grid_align-spread slds-wrap">
-            <div class="slds-col slds-size_1-of-2"></div>
-            <div class="slds-col slds-size_1-of-3 slds-var-m-bottom_small">
-                <lightning-input name="searchBox" placeholder={labels.Search_Product_Label} onchange={handleSearch} value={searchString}></lightning-input>
-            </div>
-            <div class="slds-col slds-size_1-of-1" style={dataTableStyle}>
+        <lightning-card title={labels.Available_Product_Label}>
+            <div class="slds-grid slds-grid_align-spread slds-wrap slds-var-m-around_small">
+                <div class="slds-col slds-size_1-of-2"></div>
+                <div class="slds-col slds-size_1-of-3 slds-var-m-bottom_small slds-var-m-right_small">
+                    <lightning-input name="searchBox" placeholder={labels.Search_Product_Label} onchange={handleSearch}
+                                     value={searchString}></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1" style={dataTableStyle}>
                     <lightning-datatable
                             key-field="Id"
                             columns={lstProductColumns}
@@ -16,10 +17,10 @@
                             sorted-direction={sortDirection}
                             onrowaction={handleRowAction}>
                     </lightning-datatable>
+                </div>
             </div>
-        </div>
-        <div if:true={showSpinner}>
-            <lightning-spinner alternative-text={labels.Loading_Label} size="medium"></lightning-spinner>
-        </div>
-    </lightning-card>
+            <div if:true={showSpinner}>
+                <lightning-spinner alternative-text={labels.Loading_Label} size="medium"></lightning-spinner>
+            </div>
+        </lightning-card>
 </template>
