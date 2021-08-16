@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Available_Product_Label</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Available Product Label</shortDescription>
+        <value>Products</value>
+    </labels>
+    <labels>
+        <fullName>Default_Pricebook_Name</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Default Pricebook Name</shortDescription>
+        <value>Standard</value>
+    </labels>
+    <labels>
+        <fullName>Error_Title</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Title</shortDescription>
+        <value>Error</value>
+    </labels>
+    <labels>
+        <fullName>Invalid_Arguments</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Invalid Arguments</shortDescription>
+        <value>Invalid Arguments Error</value>
+    </labels>
+    <labels>
+        <fullName>Loading_Label</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Loading Label</shortDescription>
+        <value>Loading...</value>
+    </labels>
+    <labels>
+        <fullName>Product_Sort_Column</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Product Sort Column</shortDescription>
+        <value>ID</value>
+    </labels>
+    <labels>
+        <fullName>Product_Sort_Direction</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Product Sort Direction</shortDescription>
+        <value>DESC</value>
+    </labels>
+    <labels>
+        <fullName>Search_Product_Label</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Search Product Label</shortDescription>
+        <value>Search Products</value>
+    </labels>
+</CustomLabels>
