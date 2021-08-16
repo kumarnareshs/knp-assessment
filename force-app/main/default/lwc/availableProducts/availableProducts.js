@@ -7,6 +7,7 @@ import {LightningElement, wire, api} from "lwc";
 import {showToastNotification} from "c/util";
 import {LABELS} from "c/constant";
 
+//import controller
 import getAvailableProducts from "@salesforce/apex/AvailableProductsController.getAvailableProducts";
 import addOrderItem from "@salesforce/apex/AvailableProductsController.addOrderItem";
 
@@ -30,21 +31,70 @@ const COLUMNS = [
         sortable: true
     }
 ];
+
 // Import message service features required for publishing and the message channel
 import {publish, MessageContext} from "lightning/messageService";
 import orderMessage from "@salesforce/messageChannel/orderMessage__c";
 
 export default class AvailableProducts extends LightningElement {
-    sortBy = LABELS.Product_Sort_Column;
-    sortDirection = LABELS.Product_Sort_Direction;
-    search;
-    lstAvailableProducts;
-    showSpinner = true;
-    labels = LABELS;
+
+    /**
+     * Attribute to store height of the table
+     * @type {integer}
+     */
     @api height = 250;
-    lstProductColumns = COLUMNS;
+
+    /**
+     * Attribute to store order record id
+     * @type {string}
+     */
     @api recordId;
 
+    /**
+     * Attribute to store Order by column
+     * @type {string}
+     */
+    sortBy = LABELS.Product_Sort_Column;
+
+    /**
+     * Attribute to store Order by column direction
+     * @type {string}
+     */
+    sortDirection = LABELS.Product_Sort_Direction;
+
+    /**
+     * Attribute to store search keyword from user
+     * @type {string}
+     */
+    search;
+
+    /**
+     * Attribute to store list of all the available products
+     * @type {object}
+     */
+    lstAvailableProducts;
+
+    /**
+     * Attribute to show/hide the spinner
+     * @type {boolean}
+     */
+    showSpinner = true;
+
+    /**
+     * Attribute to store all the custom labels
+     * @type {Array}
+     */
+    labels = LABELS;
+
+    /**
+     * Attribute to store table header data
+     * @type {Array}
+     */
+    lstProductColumns = COLUMNS;
+
+    /**
+     * Get Message context FROM Message channel
+     */
     @wire(MessageContext)
     messageContext;
 
@@ -52,9 +102,10 @@ export default class AvailableProducts extends LightningElement {
         return "height: " + this.height + "px;";
     }
 
-    ConnectedCallback() {
-    }
-
+    /**
+     * Get the available products
+     * @param result
+     */
     @wire(getAvailableProducts, {
         sortBy: "$sortBy",
         sortDirection: "$sortDirection"
@@ -64,22 +115,25 @@ export default class AvailableProducts extends LightningElement {
         if (data) {
             this.lstAvailableProducts = data;
         } else if (error) {
-            showToastNotification(
-                this,
-                LABELS.Error_Title,
-                error.body.message,
-                "Error"
-            );
+            showToastNotification(this, LABELS.Error_Title, error.body.message, "Error");
         }
         this.showSpinner = false;
     }
 
+    /**
+     * Handle sorting when user sorts in the table
+     * @param event
+     */
     handleSort(event) {
         this.showSpinner = true;
         this.sortBy = event.detail.fieldName;
         this.sortDirection = event.detail.sortDirection;
     }
 
+    /**
+     * Handle search by product name
+     * @param event
+     */
     handleSearch(event) {
         this.showSpinner = true;
         this.search = event.detail.value;
@@ -95,16 +149,15 @@ export default class AvailableProducts extends LightningElement {
                 this.showSpinner = false;
             })
             .catch((error) => {
-                showToastNotification(
-                    this,
-                    LABELS.Error_Title,
-                    error.body.message,
-                    "Error"
-                );
+                showToastNotification(this, LABELS.Error_Title, error.body.message, "Error");
                 this.showSpinner = false;
             });
     }
 
+    /**
+     * handle when user try to add product to the cart
+     * @param event
+     */
     handleRowAction(event) {
         const priceBookEntryId = event.detail.row.Id;
         this.showSpinner = true;
@@ -123,12 +176,7 @@ export default class AvailableProducts extends LightningElement {
                 this.showSpinner = false;
             })
             .catch((error) => {
-                showToastNotification(
-                    this,
-                    LABELS.Error_Title,
-                    error.body.message,
-                    "Error"
-                );
+                showToastNotification(this, LABELS.Error_Title, error.body.message, "Error");
                 this.showSpinner = false;
             });
     }
