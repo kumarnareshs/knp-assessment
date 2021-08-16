@@ -1,3 +1,8 @@
+/**
+ * Created by Naresh Kumar on 16/08/2021.
+ * Order Item DTO to provide the data to order component
+ */
+
 public inherited sharing class OrderItemDTO {
   @AuraEnabled
   public String product2Id;

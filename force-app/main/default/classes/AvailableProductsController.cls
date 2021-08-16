@@ -1,3 +1,7 @@
+/**
+ * Created by Naresh Kumar on 16/08/2021.
+ */
+
 public with sharing class AvailableProductsController {
     /**
      * Stores the Id of the Order Record
@@ -24,25 +28,28 @@ public with sharing class AvailableProductsController {
         }
     }
 
+    /**
+     * Method to get available products
+     * @param sortBy order by column name
+     * @param sortDirection order by direction
+     * @param search search by product name
+     *
+     * @return List of PricebookEntry
+     */
     @AuraEnabled(Cacheable=true)
-    public static List<PricebookEntry> getAvailableProducts(
-            String sortBy,
-            String sortDirection,
-            String search
-    ) {
+    public static List<PricebookEntry> getAvailableProducts(String sortBy, String sortDirection, String search) {
         if (!String.isBlank(sortBy) && !String.isBlank(sortDirection)) {
             String defaultPricebookName = Label.Default_Pricebook_Name;
-            Pricebook2 pricebook = [
+            List<Pricebook2> pricebookList = [
                     SELECT id
                     FROM Pricebook2
                     WHERE name = :defaultPricebookName
             ];
-            String query =
-                    'SELECT Name,Id,UnitPrice,Product2Id,Pricebook2Id FROM PricebookEntry ' +
-                            'WHERE IsActive = TRUE AND Pricebook2Id = \'' +
-                            pricebook.id +
-                            '\'';
-
+            if (pricebookList == null || pricebookList.size() == 0) {
+                throw new customException(Label.Data_Error);
+            }
+            String query = 'SELECT Name,Id,UnitPrice,Product2Id,Pricebook2Id FROM PricebookEntry ' + 'WHERE IsActive = TRUE AND Pricebook2Id = \'' +
+                    pricebookList[0].id + '\'';
             if (!String.isBlank(search)) {
                 query += ' AND Name like \'%' + search + '%\'';
             }
@@ -54,48 +61,63 @@ public with sharing class AvailableProductsController {
         throw new customException(Label.Invalid_Arguments);
     }
 
+    /**
+     * Method to add the order items
+     * @param priceBookEntryId
+     * @param orderRecordId
+     * @return Boolean is the method successful
+     */
     @AuraEnabled
-    public static Boolean addOrderItem(Id priceBookEntryId, id orderRecordId) {
-
-        try {
-            List<Order> order = [Select id, status from order where id = :orderRecordId];
-            if(order!=null && order.size()==1&order[0].status == 'Activated'){
-                throw new CustomException(Label.Order_Activated_Error);
-           }
-            orderId = orderRecordId;
-            List<PricebookEntry> pricebookEntry = [
-                    SELECT Name, Id, UnitPrice, Product2Id, Pricebook2Id
-                    FROM PricebookEntry
-                    WHERE Id = :PricebookEntryId
-            ];
-
-            if (Schema.SObjectType.OrderItem.isCreateable()) {
-                List<OrderItem> updatedOrderItems = checkExistingOrderItem(
-                        orderItems,
-                        pricebookEntry[0].Product2Id
-                );
-                if (updatedOrderItems == null) {
-                    setPricebookOnOrder(orderId, pricebookEntryId);
-                    OrderItem orderItem = new OrderItem();
-                    orderItem.OrderId = orderId;
-                    orderItem.Product2Id = pricebookEntry[0].Product2Id;
-                    orderItem.UnitPrice = pricebookEntry[0].UnitPrice;
-                    orderItem.Quantity = 1;
-                    orderItem.PricebookEntryId = pricebookEntryId;
-                    insert orderItem;
-                } else {
-                    update updatedOrderItems;
+    public static Boolean addOrderItem(Id priceBookEntryId, Id orderRecordId) {
+        if (!String.isBlank(priceBookEntryId) && !String.isBlank(orderRecordId)) {
+            try {
+                List<Order> order = [Select id, status from order where id = :orderRecordId];
+                if (order != null && order.size() == 1 & order[0].status == 'Activated') {
+                    throw new CustomException(Label.Order_Activated_Error);
                 }
-                return true;
-            } else {
-                throw new CustomException(Label.Order_Item_Access_Error);
+                orderId = orderRecordId;
+                List<PricebookEntry> pricebookEntry = [
+                        SELECT Name, Id, UnitPrice, Product2Id, Pricebook2Id
+                        FROM PricebookEntry
+                        WHERE Id = :PricebookEntryId
+                ];
+
+                if (Schema.SObjectType.OrderItem.isCreateable()) {
+                    List<OrderItem> updatedOrderItems = checkExistingOrderItem(
+                            orderItems,
+                            pricebookEntry[0].Product2Id
+                    );
+                    if (updatedOrderItems == null) {
+                        setPricebookOnOrder(orderId, pricebookEntryId);
+                        OrderItem orderItem = new OrderItem();
+                        orderItem.OrderId = orderId;
+                        orderItem.Product2Id = pricebookEntry[0].Product2Id;
+                        orderItem.UnitPrice = pricebookEntry[0].UnitPrice;
+                        orderItem.Quantity = 1;
+                        orderItem.PricebookEntryId = pricebookEntryId;
+                        insert orderItem;
+                    } else {
+                        update updatedOrderItems;
+                    }
+                    return true;
+                } else {
+                    throw new CustomException(Label.Order_Item_Access_Error);
+                }
+            } catch (Exception ex) {
+                throw new CustomException(ex.getMessage());
             }
-        } catch (Exception ex) {
-            throw new CustomException(ex.getMessage());
         }
+        throw new customException(Label.Invalid_Arguments);
     }
 
-    private static Order setPricebookOnOrder(Id orderId, Id pricebookEntryId) {
+    /**
+     * Method to set the procebookid on the order if it is missing
+     * @param orderId order record id
+     * @param pricebookEntryId price book Entry Id
+     *
+     * @return Boolean is the method successful
+     */
+    private static Boolean setPricebookOnOrder(Id orderId, Id pricebookEntryId) {
         Order order = [
                 SELECT Id, Status, Account.AccountNumber, OrderNumber, Type, Pricebook2Id
                 FROM order
@@ -110,10 +132,13 @@ public with sharing class AvailableProductsController {
                     WITH SECURITY_ENFORCED
             ];
             order.Pricebook2Id = pricebookEntry.Pricebook2Id;
-            if (Schema.SObjectType.Order.isUpdateable())
+            if (Schema.SObjectType.Order.isUpdateable()) {
                 update order;
+            } else {
+                throw new CustomException(Label.Order_Item_Access_Error);
+            }
         }
-        return order;
+        return true;
     }
 
     /**

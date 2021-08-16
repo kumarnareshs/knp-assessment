@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
     <labels>
+        <fullName>Activate_Order_Label</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Activate Order Label</shortDescription>
+        <value>Activate</value>
+    </labels>
+    <labels>
         <fullName>Available_Product_Label</fullName>
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>Available Product Label</shortDescription>
-        <value>Products</value>
+        <value>Available Products</value>
     </labels>
     <labels>
         <fullName>Default_Pricebook_Name</fullName>
@@ -22,6 +29,13 @@
         <value>Error</value>
     </labels>
     <labels>
+        <fullName>External_Order_Update_Error</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>External Order Update Error</shortDescription>
+        <value>Error on updating order in external system</value>
+    </labels>
+    <labels>
         <fullName>Invalid_Arguments</fullName>
         <language>en_US</language>
         <protected>true</protected>
@@ -34,6 +48,48 @@
         <protected>true</protected>
         <shortDescription>Loading Label</shortDescription>
         <value>Loading...</value>
+    </labels>
+    <labels>
+        <fullName>Order_Activated_Error</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Order Activated Error</shortDescription>
+        <value>Order Items are already activated.You cannot add the products to the cart now.</value>
+    </labels>
+    <labels>
+        <fullName>Order_Item_Access_Error</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Order Item Access Error</shortDescription>
+        <value>Access Error on Order Item object</value>
+    </labels>
+    <labels>
+        <fullName>Order_Product_Label</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Order Product Label</shortDescription>
+        <value>Order Products</value>
+    </labels>
+    <labels>
+        <fullName>Order_Sort_Column</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Order Sort Column</shortDescription>
+        <value>ID</value>
+    </labels>
+    <labels>
+        <fullName>Order_Sort_Direction</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Order Sort Direction</shortDescription>
+        <value>ASC</value>
+    </labels>
+    <labels>
+        <fullName>Order_Update_Error</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Order Update Error</shortDescription>
+        <value>Access Error on Order object</value>
     </labels>
     <labels>
         <fullName>Product_Sort_Column</fullName>
