@@ -1,5 +1,1 @@
-public with sharing class customException {
-    public customException() {
-
-    }
-}
+public class customException extends Exception{}

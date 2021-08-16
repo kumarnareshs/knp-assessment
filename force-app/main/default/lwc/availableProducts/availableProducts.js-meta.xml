@@ -12,6 +12,7 @@
             <objects>
                 <object>Order</object>
             </objects>
+            <property name="height" type="String" description="Height of the table in number" />
              </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

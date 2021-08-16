@@ -11,9 +11,10 @@ public with sharing class AvailableProductsController {
         String defaultPricebookName = Label.Default_Pricebook_Name;
         Pricebook2 pricebook = [Select id from Pricebook2 where name =:defaultPricebookName];
         String query = 'SELECT Name,Id,UnitPrice,Product2Id,Pricebook2Id FROM PricebookEntry '+
-        'WHERE IsActive = TRUE AND Pricebook2Id =:pricebook.id ';
+        'WHERE IsActive = TRUE AND Pricebook2Id = \''+pricebook.id+'\'';
+
         if(!String.isBlank(search)){
-            query += ' Name like %'+Search+'%';
+            query += ' AND Name like \'%'+search+'%\'';
         }
         query += ' WITH SECURITY_ENFORCED ';
         query += ' ORDER BY '+sortBy +' '+sortDirection;

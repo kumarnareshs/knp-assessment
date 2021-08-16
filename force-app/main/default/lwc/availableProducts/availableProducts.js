@@ -1,22 +1,11 @@
 //import methods
-import { LightningElement, track, wire, api } from 'lwc';
-import {showToastNotification} from 'c/util';
-import {LABELS} from 'c/constant';
-// import { refreshApex } from "@salesforce/apex";
-// import { MessageEventController } from "c/messageEventController";
-// import MessagingService from '@salesforce/messageChannel/orderMessage__c';
+import { LightningElement, wire, api } from 'lwc';
+import { showToastNotification } from 'c/util';
+import { LABELS } from 'c/constant';
 
-// //import controller
-// import getPricebooks from '@salesforce/apex/AvailableProductsController.getPricebooks';
-// import getOrder from '@salesforce/apex/OrderProductsController.getOrder';
-// import getAvailableProducts from '@salesforce/apex/AvailableProductsController.getAvailableProducts';
-// import getAvailableOrderItems from '@salesforce/apex/OrderProductsController.getAvailableOrderItems';
-// import { APPLICATION_SCOPE, MessageContext, subscribe } from "lightning/messageService";
-
-//import getPricebooks from '@salesforce/apex/AvailableProductsController.getPricebooks';
 import getAvailableProducts from '@salesforce/apex/AvailableProductsController.getAvailableProducts';
-const COLUMNS = [
-    {label: '',
+const COLUMNS = [{
+        label: '',
         type: 'button-icon',
         initialWidth: 75,
         typeAttributes: {
@@ -26,43 +15,35 @@ const COLUMNS = [
             alternativeText: 'View',
         }
     },
-    {label: 'Name',fieldName: 'Name',type: 'text'},
-    {label: 'List Price',fieldName: 'UnitPrice',type: 'currency'}
+    { label: 'Name', fieldName: 'Name', type: 'text', sortable: true },
+    { label: 'List Price', fieldName: 'UnitPrice', type: 'currency', sortable: true }
 ];
 
 export default class AvailableProducts extends LightningElement {
 
-
-
     sortBy = LABELS.Product_Sort_Column;
-    sortDirection =LABELS.Product_Sort_Direction;
+    sortDirection = LABELS.Product_Sort_Direction;
     search;
-    lstProductColumns;  
+    lstProductColumns;
     lstAvailableProducts;
     showSpinner = true;
     labels = LABELS;
-    
+    @api height = 250;
     lstProductColumns = COLUMNS;
-    connectedCallback() {
-       
+
+
+    get dataTableStyle() {
+        return 'height: ' + this.height + 'px;';
     }
 
-    // @wire(getColumnData)
-    // getColumnData({error, data}) {
-    //     if (data) {
-    //         this.lstDataTableColumns = data
-    //     } else if (error) {
-    //         showToastNotification(this, LABELS.Error_Title, error.body.message, 'Error');
-    //     }
-    // }
+    ConnectedCallback(){
 
+    }
     @wire(getAvailableProducts, {
         sortBy: '$sortBy',
-        sortDirection: '$sortDirection',
-        search: '$search'
+        sortDirection: '$sortDirection'
     })
-    getAvailableProducts({error, data}) {
-        this.serverResponse = data;
+    wiredAvailableProductsResponse({ error, data }) {
         this.showSpinner = true;
         if (data) {
             this.lstAvailableProducts = data;
@@ -70,7 +51,6 @@ export default class AvailableProducts extends LightningElement {
             showToastNotification(this, LABELS.Error_Title, error.body.message, 'Error');
         }
         this.showSpinner = false;
-
     }
 
     handleSort(event) {
@@ -82,6 +62,20 @@ export default class AvailableProducts extends LightningElement {
     handleSearch(event) {
         this.showSpinner = true;
         this.search = event.detail.value;
+        getAvailableProducts({
+            sortBy: this.sortBy,
+            sortDirection: this.sortDirection,
+            search: this.search
+        }).then(result => {
+            if (result) {
+                this.lstAvailableProducts = result;
+            }
+            this.showSpinner = false;
+        }).catch(error => {
+            showToastNotification(this, LABELS.Error_Title, error.body.message, 'Error');
+            this.showSpinner = false;
+        });
+
     }
 
 }
