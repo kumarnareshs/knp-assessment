@@ -7,6 +7,7 @@ import Loading_Label from "@salesforce/label/c.Loading_Label";
 import Order_Sort_Column from "@salesforce/label/c.Order_Sort_Column";
 import Order_Sort_Direction from "@salesforce/label/c.Order_Sort_Direction";
 import Order_Product_Label from "@salesforce/label/c.Order_Product_Label";
+import Activate_Order_Label from "@salesforce/label/c.Activate_Order_Label";
 
 const LABELS = {
   Product_Sort_Column,
@@ -17,7 +18,8 @@ const LABELS = {
   Loading_Label,
   Order_Sort_Column,
   Order_Sort_Direction,
-  Order_Product_Label
+  Order_Product_Label,
+  Activate_Order_Label
 };
 
 export { LABELS };

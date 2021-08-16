@@ -1,24 +1,28 @@
 <template>
-  <lightning-card title={labels.Order_Product_Label}>
-    <div class="slds-grid slds-grid_align-spread slds-wrap">
-      <div class="slds-col slds-size_1-of-1" style={dataTableStyle}>
-        <lightning-datatable
-          key-field="Id"
-          columns={lstOrderColumns}
-          data={lstOrders}
-          onsort={handleSort}
-          hide-checkbox-column="true"
-          sorted-by={sortBy}
-          sorted-direction={sortDirection}
-        >
-        </lightning-datatable>
-      </div>
-    </div>
-    <div if:true={showSpinner}>
-      <lightning-spinner
-        alternative-text={labels.Loading_Label}
-        size="medium"
-      ></lightning-spinner>
-    </div>
-  </lightning-card>
+    <lightning-card title={labels.Order_Product_Label}>
+        <div class="slds-grid slds-grid_align-spread slds-wrap">
+            <div class="slds-col slds-size_1-of-2"></div>
+            <div class="slds-col slds-size_1-of-3 slds-var-m-bottom_small">
+                <lightning-button variant="brand" disabled={isActivated} label={labels.Activate_Order_Label} title={labels.Activate_Order_Label} onclick={handleActivateClick} class="slds-m-left_x-small"></lightning-button>
+            </div>
+            <div class="slds-col slds-size_1-of-1" style={dataTableStyle}>
+                <lightning-datatable
+                        key-field="Id"
+                        columns={lstOrderColumns}
+                        data={lstOrders}
+                        onsort={handleSort}
+                        hide-checkbox-column="true"
+                        sorted-by={sortBy}
+                        sorted-direction={sortDirection}
+                >
+                </lightning-datatable>
+            </div>
+        </div>
+        <div if:true={showSpinner}>
+            <lightning-spinner
+                    alternative-text={labels.Loading_Label}
+                    size="medium"
+            ></lightning-spinner>
+        </div>
+    </lightning-card>
 </template>

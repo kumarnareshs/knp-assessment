@@ -3,6 +3,7 @@
 #
 
 **/staticresources/**
+**/default/**
 .localdevserver
 .sfdx
 .vscode
