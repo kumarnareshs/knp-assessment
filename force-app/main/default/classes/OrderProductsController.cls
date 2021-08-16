@@ -131,7 +131,7 @@ public with sharing class OrderProductsController {
         }
     }
 
-    class OrderData {
+    public class OrderData {
         @AuraEnabled
         public List<OrderItemDTO> orderItems { get; set; }
         @AuraEnabled

@@ -18,8 +18,10 @@ private class AvailableProductsControllerTest {
         Test.stopTest();
         System.assertEquals(2, pricebookEntries.size(), 'There should be 2 PricebookEntries');
     }
+
     @IsTest
-    private static void TestAddOrderItemMethod() {
+    private static void TestUpdateOrderItemMethod() {
+
         List<PricebookEntry> pricebookEntryList = [Select id from PricebookEntry];
         List<order> orderList = [Select id from order];
         List<orderItem> orderItemList = [Select id,Quantity from orderItem];
