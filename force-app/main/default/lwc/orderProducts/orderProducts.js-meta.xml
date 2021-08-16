@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>52.0</apiVersion>
+    <description>Component to show Order products</description>
+    <isExposed>true</isExposed>
+    <masterLabel>Order Products</masterLabel>
+    <targets>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <objects>
+                <object>Order</object>
+            </objects>
+            <property
+        name="height"
+        type="String"
+        description="Height of the table in number"
+      />
+             </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>
