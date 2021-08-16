@@ -22,6 +22,5 @@ import {ShowToastEvent} from "lightning/platformShowToastEvent";
 
 
  export {
-
     showToastNotification
 };
